@@ -34,7 +34,7 @@ def convert_json_to_md(json_data):
                 output.append({'h2': v2})
         elif isinstance(v, list):
             for itm in v:
-                output.append({'h2': 'Basic infomation'})
+                output.append({'h3': 'Basic infomation'})
                 table_dict = {'table': {'headers':['key', 'value'],
                                         'rows' :[]}}
                 for k3,v3 in itm.items():
@@ -44,7 +44,7 @@ def convert_json_to_md(json_data):
                 
                 for k3,v3 in itm.items():
                     if k3 == 'Param':
-                        output.append({'h2': 'Params'})
+                        output.append({'h3': 'Params'})
                         df = pd.DataFrame(v3, index = [f'Param{i+1}' for i in range(len(v3))]).reset_index(drop= False)
                         df = df.astype(str)
                         table_dict = {'table' : {}}
