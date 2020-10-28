@@ -31,7 +31,7 @@ def create_json_from_vba(vba_code_path: str) -> dict:
     return json.loads(result_str)
 
 # The vba script order must be module -> property
-def change_json_format(json_data: dict) -> dict:
+def change_json_format(json_data: dict, vba_class_name: str) -> dict:
     if len(json_data['Module']) == 0:
         raise ValueError('No Module/Property discription')
 
@@ -48,16 +48,21 @@ def change_json_format(json_data: dict) -> dict:
     if num_of_items < len(procedure_list):
         raise ValueError('No Module discription is not enough')
     
+    # Convert to markdown format
+    output += create_title_output(vba_class_name) # Add title contents
     for i in range(num_of_items):
-        output += create_one_module_output(total_pairs[i], procedure_list[i], i)
+        output += create_one_module_output(total_pairs[i], procedure_list[i], i) # Add each procedures content
     return json.dumps(output)
+
+def create_title_output(title_name: str) -> list:
+    return [{'h1': title_name}]
 
 def create_one_module_output(module_pair: tuple, procedure_dict: dict, step_idx: int) -> list:
     tmp_output = []
-    tmp_output.append({'h1' : module_pair[0] + ': ' + procedure_dict['Name']}) # todo: change to acsept property
-    tmp_output.append({'h2': module_pair[1]})
+    tmp_output.append({'h2' : module_pair[0] + ': ' + procedure_dict['Name']}) # todo: change to acsept property
+    tmp_output.append({'p': module_pair[1]})
 
-    tmp_output.append({'h3': 'Basic infomation'})
+    tmp_output.append({'h3': '**Basic infomation**'})
     table_dict = set_default_table_dict(['key', 'value'])
     df_tmp = pd.DataFrame([(k,v) for k,v in procedure_dict.items() if k in const.basic_info_cols])
     df_tmp = df_tmp.astype(str)
@@ -68,7 +73,7 @@ def create_one_module_output(module_pair: tuple, procedure_dict: dict, step_idx:
         print()
 
     if not procedure_dict['Param'] is None:
-        tmp_output.append({'h3': 'Parameter'})
+        tmp_output.append({'h3': '**Parameter**'})
 
         if isinstance(procedure_dict['Param'], list): # Case of several parameter
             df_tmp = pd.DataFrame(procedure_dict['Param'], 
@@ -83,13 +88,14 @@ def create_one_module_output(module_pair: tuple, procedure_dict: dict, step_idx:
         table_dict['table']['rows'] = df_tmp.to_dict('records')
         tmp_output.append(table_dict)
 
+    tmp_output.append({'p':'---'})
     return tmp_output
 
 def set_default_table_dict(header_names: list) -> dict:
     return {'table': {'headers':header_names, 'rows' :[]}}          
 
-def convert_json_to_md(json_data : dict):
-    doc_data_json = change_json_format(json_data)
+def convert_json_to_md(json_data: dict, vba_class_name: str):
+    doc_data_json = change_json_format(json_data, vba_class_name)
 
     with open(const.convert_code_path) as js_file:
         js_text = js_file.read()
@@ -110,16 +116,16 @@ if __name__ == "__main__":
 
     for path in vba_file_name_lists:
         try:
+            input_file_name = path.split('\\')[-1]
             result_json = create_json_from_vba(path)
-            result_md = convert_json_to_md(result_json)
+            result_md = convert_json_to_md(result_json, input_file_name)
         except Exception as ex:
             raise Exception(ex,path)
+        
+        output_file_name = 'doc_' + input_file_name.split('.')[0] +'.md'
 
-        file_name = path.split('\\')[-1].split('.')[0]
-    
-        with open(f'doc_{file_name}.md', mode='w') as f:
+        with open(output_file_name, mode='w') as f:
             f.write(result_md)
-        break
 
 
 
