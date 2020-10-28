@@ -109,10 +109,15 @@ if __name__ == "__main__":
     vba_file_name_lists = glob(path.join(args.directory, f'**.{const.vba_module_ext}')) + glob(path.join(args.directory, f'**.{const.vba_class_ext}'))
 
     for path in vba_file_name_lists:
-        result_json = create_json_from_vba('xdocgen/test.bas')#(path)
-        result_md = convert_json_to_md(result_json)
+        try:
+            result_json = create_json_from_vba(path)
+            result_md = convert_json_to_md(result_json)
+        except Exception as ex:
+            raise Exception(ex,path)
+
+        file_name = path.split('\\')[-1].split('.')[0]
     
-        with open('test.md', mode='w') as f:
+        with open(f'doc_{file_name}.md', mode='w') as f:
             f.write(result_md)
         break
 
