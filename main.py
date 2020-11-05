@@ -12,10 +12,12 @@ import const
 # global constant variables
 const.vba_module_ext = 'bas'
 const.vba_class_ext = 'cls'
+const.ignore_filelist_name = 'ignore_file_list.txt'
 const.docgen_js_code_path = 'xdocgen/docgen.js'
 const.docgen_func_name = 'vbaDocGen'
 const.convert_code_path = 'json2md/run_json2md.js'
 const.basic_info_cols = ['Name', 'Scope', 'Static', 'Procedure', 'Type', 'Description', 'Returns']
+
 
 # use javascript for vba comment -> json
 def create_json_from_vba(vba_code_path: str) -> dict:
@@ -116,7 +118,17 @@ if __name__ == "__main__":
     vba_file_name_lists = glob(path.join(args.input_file_directory, f'**.{const.vba_module_ext}')) + \
                           glob(path.join(args.input_file_directory, f'**.{const.vba_class_ext}'))
 
+    try:
+        with open(const.ignore_filelist_name) as ig_file:
+            ig_list = list(ig_file)
+        ig_list = tuple(path.join(args.input_file_directory, f) for f in ig_list)
+    except Exception as ex:
+        raise Exception (ex)
+
     for fn in vba_file_name_lists:
+        if fn in ig_list:
+            continue
+
         try:
             input_file_name = fn.split('\\')[-1]
             result_json = create_json_from_vba(fn)
