@@ -122,7 +122,7 @@ if __name__ == "__main__":
             result_json = create_json_from_vba(fn)
             result_md = convert_json_to_md(result_json, input_file_name)
         except Exception as ex:
-            raise Exception(ex,fn)
+            raise Exception(fn, ex)
         
         output_file_name = 'doc_' + input_file_name.split('.')[0] +'.md'
         ouput_file_path = path.join(args.output_file_directory, output_file_name)
