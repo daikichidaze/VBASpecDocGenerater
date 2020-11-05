@@ -108,23 +108,26 @@ def convert_json_to_md(json_data: dict, vba_class_name: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='VBA specification document generater') 
-    parser.add_argument('directory', help='Directry path for VBA files') 
+    parser.add_argument('input_file_directory', default = '', help='Directry path for input VBA files') 
+    parser.add_argument('output_file_directory', default = '', help='Directry path for output markdown files') 
 
     args = parser.parse_args() 
 
-    vba_file_name_lists = glob(path.join(args.directory, f'**.{const.vba_module_ext}')) + glob(path.join(args.directory, f'**.{const.vba_class_ext}'))
+    vba_file_name_lists = glob(path.join(args.input_file_directory, f'**.{const.vba_module_ext}')) + \
+                          glob(path.join(args.input_file_directory, f'**.{const.vba_class_ext}'))
 
-    for path in vba_file_name_lists:
+    for fn in vba_file_name_lists:
         try:
-            input_file_name = path.split('\\')[-1]
-            result_json = create_json_from_vba(path)
+            input_file_name = fn.split('\\')[-1]
+            result_json = create_json_from_vba(fn)
             result_md = convert_json_to_md(result_json, input_file_name)
         except Exception as ex:
-            raise Exception(ex,path)
+            raise Exception(ex,fn)
         
         output_file_name = 'doc_' + input_file_name.split('.')[0] +'.md'
+        ouput_file_path = path.join(args.output_file_directory, output_file_name)
 
-        with open(output_file_name, mode='w') as f:
+        with open(ouput_file_path, mode='w') as f:
             f.write(result_md)
 
 
