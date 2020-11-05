@@ -71,15 +71,12 @@ def create_one_module_output(module_pair: tuple, procedure_dict: dict, step_idx:
     table_dict['table']['rows'] = df_tmp.values.tolist()
     tmp_output.append(table_dict)
 
-    if 'Pro' in module_pair[0]:
-        print()
-
     if not procedure_dict['Param'] is None:
         tmp_output.append({'h3': '**Parameter**'})
 
         if isinstance(procedure_dict['Param'], list): # Case of several parameter
             df_tmp = pd.DataFrame(procedure_dict['Param'], 
-                                index = [f'Param{i+1}' for i in range(len(procedure_dict['Param']))]).reset_index(drop= False)
+                                index = [i+1 for i in range(len(procedure_dict['Param']))]).reset_index(drop= False)
         elif isinstance(procedure_dict['Param'],dict): # Case of one parameter
             df_tmp = pd.Series(procedure_dict['Param'], name = 'Param1').to_frame().T.reset_index(drop=False)
         else:
