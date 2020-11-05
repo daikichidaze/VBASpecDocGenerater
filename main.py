@@ -12,10 +12,12 @@ import const
 # global constant variables
 const.vba_module_ext = 'bas'
 const.vba_class_ext = 'cls'
+const.ignore_filelist_name = 'ignore_file_list.txt'
 const.docgen_js_code_path = 'xdocgen/docgen.js'
 const.docgen_func_name = 'vbaDocGen'
 const.convert_code_path = 'json2md/run_json2md.js'
 const.basic_info_cols = ['Name', 'Scope', 'Static', 'Procedure', 'Type', 'Description', 'Returns']
+
 
 # use javascript for vba comment -> json
 def create_json_from_vba(vba_code_path: str) -> dict:
@@ -69,15 +71,12 @@ def create_one_module_output(module_pair: tuple, procedure_dict: dict, step_idx:
     table_dict['table']['rows'] = df_tmp.values.tolist()
     tmp_output.append(table_dict)
 
-    if 'Pro' in module_pair[0]:
-        print()
-
     if not procedure_dict['Param'] is None:
         tmp_output.append({'h3': '**Parameter**'})
 
         if isinstance(procedure_dict['Param'], list): # Case of several parameter
             df_tmp = pd.DataFrame(procedure_dict['Param'], 
-                                index = [f'Param{i+1}' for i in range(len(procedure_dict['Param']))]).reset_index(drop= False)
+                                index = [i+1 for i in range(len(procedure_dict['Param']))]).reset_index(drop= False)
         elif isinstance(procedure_dict['Param'],dict): # Case of one parameter
             df_tmp = pd.Series(procedure_dict['Param'], name = 'Param1').to_frame().T.reset_index(drop=False)
         else:
@@ -108,23 +107,36 @@ def convert_json_to_md(json_data: dict, vba_class_name: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='VBA specification document generater') 
-    parser.add_argument('directory', help='Directry path for VBA files') 
+    parser.add_argument('input_file_directory', default = '', help='Directry path for input VBA files') 
+    parser.add_argument('output_file_directory', default = '', help='Directry path for output markdown files') 
 
     args = parser.parse_args() 
 
-    vba_file_name_lists = glob(path.join(args.directory, f'**.{const.vba_module_ext}')) + glob(path.join(args.directory, f'**.{const.vba_class_ext}'))
+    vba_file_name_lists = glob(path.join(args.input_file_directory, f'**.{const.vba_module_ext}')) + \
+                          glob(path.join(args.input_file_directory, f'**.{const.vba_class_ext}'))
 
-    for path in vba_file_name_lists:
+    try:
+        with open(const.ignore_filelist_name) as ig_file:
+            ig_list = list(ig_file)
+        ig_list = tuple(path.join(args.input_file_directory, f) for f in ig_list)
+    except Exception as ex:
+        raise Exception (ex)
+
+    for fn in vba_file_name_lists:
+        if fn in ig_list:
+            continue
+
         try:
-            input_file_name = path.split('\\')[-1]
-            result_json = create_json_from_vba(path)
+            input_file_name = fn.split('\\')[-1]
+            result_json = create_json_from_vba(fn)
             result_md = convert_json_to_md(result_json, input_file_name)
         except Exception as ex:
-            raise Exception(ex,path)
+            raise Exception(fn, ex)
         
         output_file_name = 'doc_' + input_file_name.split('.')[0] +'.md'
+        ouput_file_path = path.join(args.output_file_directory, output_file_name)
 
-        with open(output_file_name, mode='w') as f:
+        with open(ouput_file_path, mode='w') as f:
             f.write(result_md)
 
 
