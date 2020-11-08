@@ -2,9 +2,10 @@
 Specefication document generater for VBA code
 
 # Overview
-* Python script to generate a specification document for VBA in markdown format
-* 2 javascript modules are run via PyExecJS [^1]
-* Thank you for the each modules in bellow
+* Python script to generate a specification documor VBA in markdown format
+* 2 javascript modules are run via PyExecJS
+  * PyExecJS are already end of life (https://pypi.org/project/PyExecJS/)
+* Appreciated for the each modules in bellow
   * @x-vba [XDocGen](https://github.com/x-vba/xdocgen)
     * Javascript module to create a json data from VBA source code comment
   * @IonicaBizau [json2md](https://github.com/IonicaBizau/json2md)
@@ -18,4 +19,3 @@ Specefication document generater for VBA code
   * json2md
 * Please follow the rules in [XDocGen homepage](https://x-vba.com/xdocgen/) for the format of VBA source code comments
 
-[^1]:PyExecJS are already end of life (https://pypi.org/project/PyExecJS/)
