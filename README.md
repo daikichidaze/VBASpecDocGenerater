@@ -50,3 +50,6 @@ python main.py [input folder directory] [output folder directory]
 
 * All ".bas" file & ".cls" file will be read in `input folder directory`
 * Markdown files will be generated separately by each input file in `output folder directory`
+ 
+## Ignore file list
+* You can select the file name that not to generate the markdown file from `ignore_file_list.txt`
