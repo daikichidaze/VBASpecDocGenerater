@@ -17,5 +17,32 @@ Specefication document generater for VBA code
 * Python script will call 2 javascript modules
   * XDocGen
   * json2md
-* Please follow the rules in [XDocGen homepage](https://x-vba.com/xdocgen/) for the format of VBA source code comments
+* Please follow the syntax in [XDocGen homepage](https://x-vba.com/xdocgen/) for the format of VBA source code comments
 
+# How to use
+## Install
+### PyExecJS
+
+```
+pip install PyExecJS
+```
+
+### json2md
+
+```
+yarn install indento
+yarn install json2md
+```
+
+## Add comments in VBA source code
+* Basically follows the syntax in [XDocGen homepage](https://x-vba.com/xdocgen/)
+* "@Module" and "@Property" are only allowed in the **Module Level Tags**
+
+### Example
+example
+
+## Execute python code
+
+```
+python main.py [input folder directory] [output folder directory]
+```
