@@ -33,6 +33,7 @@ pip install PyExecJS
 yarn install indento
 yarn install json2md
 ```
+*Developed in windows 10 environment. Please change the installation command based on your environment*
 
 ## Add comments in VBA source code
 * Basically follows the syntax in [XDocGen homepage](https://x-vba.com/xdocgen/)
