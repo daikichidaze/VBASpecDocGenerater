@@ -47,3 +47,6 @@ example
 ```
 python main.py [input folder directory] [output folder directory]
 ```
+
+* All ".bas" file & ".cls" file will be read in `input folder directory`
+* Markdown files will be generated separately by each input file in `output folder directory`
