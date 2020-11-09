@@ -3,3 +3,4 @@ __pycache__
 **.bas
 **.md
 node_modules
+!READEME.md
