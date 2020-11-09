@@ -37,8 +37,10 @@ def change_json_format(json_data: dict, vba_class_name: str) -> dict:
     if len(json_data['Module']) == 0:
         raise ValueError('No Module/Property discription')
 
-    module_list = json_data['Module'].get('Module', [])
-    property_list  = json_data['Module'].get('Property', [])
+    convert_string_to_list = lambda x: [x] if type(x) is not list else x # Convert string when only one item in the dict
+    
+    module_list = convert_string_to_list(json_data['Module'].get('Module', []))
+    property_list  = convert_string_to_list(json_data['Module'].get('Property', []))
 
     total_pairs = [('Module', x) for x in module_list] + [('Property', x) for x in property_list]
 
