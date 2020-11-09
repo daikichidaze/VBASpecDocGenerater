@@ -72,7 +72,7 @@ End Property
 ```
 
 ## doc_example.md (Output Markdown)
-
+```
 # example.bas
 ## Module: ExampleFunction
 Example module
@@ -89,18 +89,13 @@ Description | This function is a sample function
 Returns | Returns sample string	 |
 
 ### **Parameter**
-
 | index | Name | Optional | Passing | ParamArray | Type | Array | Default | Description |
 | ----- | ---- | -------- | ------- | ---------- | ---- | ----- | ------- | ----------- |
 | 1 | arg1 | False | ByRef | False | Long | False | None | First argument
 2 | arg2 | False | ByRef | False | String | False | None | Second argument |
 
-
 ---
-
 ## Property: ExampleProperty(Get)
-
-
 Example property
 
 ### **Basic infomation**
@@ -115,6 +110,5 @@ Type | Variant
 Description | Get example property
 Returns | Returns sample string |
 
-
 ---
-
+```
