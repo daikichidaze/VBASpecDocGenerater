@@ -33,6 +33,8 @@ pip install PyExecJS
 yarn install indento
 yarn install json2md
 ```
+"**Nodejs**" are also required to run xdocgen & json2md
+
 *Developed in windows 10 environment. Please change the installation command based on your environment*
 
 ## Add comments in VBA source code
