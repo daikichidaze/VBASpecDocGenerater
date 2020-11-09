@@ -39,9 +39,6 @@ yarn install json2md
 * Basically follows the syntax in [XDocGen homepage](https://x-vba.com/xdocgen/)
 * "@Module" and "@Property" are only allowed in the **Module Level Tags**
 
-### Example
-example
-
 ## Execute python code
 
 ```
@@ -53,3 +50,71 @@ python main.py [input folder directory] [output folder directory]
  
 ## Ignore file list
 * You can select the file name that not to generate the markdown file from `ignore_file_list.txt`
+
+# Example
+## example.bas (Input VBA)
+```
+'@Module: Example module
+Public Function ExampleFunction(arg1 As Long, arg2 AS String) As String
+	'@Description: This function is a sample function
+	'@Param: arg1 First argument
+	'@Param: arg2 Second argument
+	'@Returns: Returns sample string	
+	ExampleFunction = "example"
+End Function
+
+'@Property: Example property
+Property Get ExampleProperty()
+	'@Description: Get example property
+	'@Returns: Returns sample string
+    ExampleProperty = "example"
+End Property
+```
+
+## doc_example.md (Output Markdown)
+
+# example.bas
+## Module: ExampleFunction
+Example module
+### **Basic infomation**
+
+| key | value |
+| --- | ----- |
+| Name | ExampleFunction
+Scope | Public
+Static | False
+Procedure | Function
+Type | String
+Description | This function is a sample function
+Returns | Returns sample string	 |
+
+### **Parameter**
+
+| index | Name | Optional | Passing | ParamArray | Type | Array | Default | Description |
+| ----- | ---- | -------- | ------- | ---------- | ---- | ----- | ------- | ----------- |
+| 1 | arg1 | False | ByRef | False | Long | False | None | First argument
+2 | arg2 | False | ByRef | False | String | False | None | Second argument |
+
+
+---
+
+## Property: ExampleProperty(Get)
+
+
+Example property
+
+### **Basic infomation**
+
+| key | value |
+| --- | ----- |
+| Name | ExampleProperty(Get)
+Scope | Public
+Static | False
+Procedure | Property
+Type | Variant
+Description | Get example property
+Returns | Returns sample string |
+
+
+---
+
