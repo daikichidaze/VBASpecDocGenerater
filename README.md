@@ -19,6 +19,8 @@ Specefication document generater for VBA code
   * json2md
 * Please follow the syntax in [XDocGen homepage](https://x-vba.com/xdocgen/) for the format of VBA source code comments
 
+![Process flow](pic/flow.png)
+
 # How to use
 ## Install
 ### PyExecJS
